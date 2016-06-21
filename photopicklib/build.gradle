@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.zero.photopick"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
@@ -22,6 +21,10 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile project(':photopicklib')
+    compile rootProject.ext.libSupportAppcompat
+    compile rootProject.ext.libSupportDesign
+    compile rootProject.ext.libSupportV4
+    compile rootProject.ext.libRxAndroid
+    compile rootProject.ext.libRxJava
+    compile rootProject.ext.libGlide
 }
