@@ -26,6 +26,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                         Photo photo, final int maxPickSize, int imageSize) {
         thumbPhotoView.setLayoutParams(new FrameLayout.LayoutParams(imageSize, imageSize));
         thumbPhotoView.loadData(photo.getPath());
+
         if (selectedImages.contains(photo.getPath())) {
             thumbPhotoView.showSelected(true);
         } else {
