@@ -19,18 +19,28 @@ import java.util.List;
  */
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
+    public final static int ITEM_TYPE_CAMERA = 100;
+    public final static int ITEM_TYPE_PHOTO  = 101;
+
     private Context mContext;
     private List<Photo> mPhotos = new ArrayList<>();
     private ArrayList<String> mSelImages = new ArrayList<>();
     private int maxCount;
+    private boolean isCamera;
 
     private int imageSize;
 
-    public PhotoAdapter(Context context, List<Photo> photos, int maxCount) {
+    public PhotoAdapter(Context context, List<Photo> photos, int maxCount, boolean isCamera) {
         mContext = context;
         mPhotos = photos;
         this.maxCount = maxCount;
+        this.isCamera = isCamera;
         setImageSize(context, 3);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (showCamera() && 0 == position) ? ITEM_TYPE_CAMERA : ITEM_TYPE_PHOTO;
     }
 
     public void addData(List<Photo> photos){
@@ -58,15 +68,30 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
-        holder.setData(mSelImages, mPhotos.get(position), maxCount, imageSize);
+        if (ITEM_TYPE_PHOTO == getItemViewType(position)) {
+            Photo mPhoto;
+            if (showCamera()) {
+                mPhoto = mPhotos.get(position - 1);
+            } else {
+                mPhoto = mPhotos.get(position);
+            }
+            holder.setData(mSelImages, mPhoto, maxCount, imageSize);
+        } else {
+            holder.setCamera();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mPhotos.size();
+        int mCount = mPhotos.size();
+        return showCamera() ? mCount + 1 : mCount;
     }
 
     public ArrayList<String> getSelectedImages(){
         return mSelImages;
+    }
+
+    public boolean showCamera() {
+        return isCamera;
     }
 }

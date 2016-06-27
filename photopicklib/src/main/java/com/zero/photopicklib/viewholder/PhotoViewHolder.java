@@ -1,6 +1,7 @@
 package com.zero.photopicklib.viewholder;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -22,8 +23,15 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         thumbPhotoView = (ThumbPhotoView) itemView;
     }
 
-    public void setData(final ArrayList<String> selectedImages,
-                        Photo photo, final int maxPickSize, int imageSize) {
+    /**
+     * 绑定数据
+     * @param selectedImages    选择图片路径
+     * @param photo             图片
+     * @param maxPickSize       最大选择数量
+     * @param imageSize         图片显示大小
+     */
+    public void setData(final ArrayList<String> selectedImages, Photo photo,
+                        final int maxPickSize, int imageSize) {
         thumbPhotoView.setLayoutParams(new FrameLayout.LayoutParams(imageSize, imageSize));
         thumbPhotoView.loadData(photo.getPath());
 
@@ -49,6 +57,16 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                         thumbPhotoView.showSelected(true);
                     }
                 }
+            }
+        });
+    }
+
+    public void setCamera() {
+        thumbPhotoView.loadCamera();
+        thumbPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("事件", "点击拍照");
             }
         });
     }

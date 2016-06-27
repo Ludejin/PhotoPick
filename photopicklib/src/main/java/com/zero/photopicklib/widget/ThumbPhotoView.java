@@ -53,6 +53,11 @@ public class ThumbPhotoView extends RelativeLayout {
         photo_thumbview_selected.setVisibility(VISIBLE);
     }
 
+    public void loadCamera() {
+        photo_thumbview.setImageResource(R.drawable.ic_camera);
+        photo_thumbview_selected.setVisibility(GONE);
+    }
+
     public void showSelected(boolean showSelected) {
         if (showSelected) {
             photo_thumbview_selected.setBackgroundResource(R.drawable.photo_selected);

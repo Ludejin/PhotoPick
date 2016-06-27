@@ -131,7 +131,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     private void initRecycleView() {
-        mPhotoAdapter = new PhotoAdapter(this, mPhotos, 6);
+        mPhotoAdapter = new PhotoAdapter(this, mPhotos, 6, true);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mRcyPhoto.setLayoutManager(layoutManager);
         mRcyPhoto.setAdapter(mPhotoAdapter);
