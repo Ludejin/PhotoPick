@@ -3,6 +3,7 @@ package com.zero.photopicklib.adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
@@ -28,11 +29,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     private int maxCount;
     private boolean isCamera;
 
+    private int mCurrDirIndex = 0;
+
     private int imageSize;
 
     public PhotoAdapter(Context context, List<Photo> photos, int maxCount, boolean isCamera) {
         mContext = context;
         mPhotos = photos;
+
         this.maxCount = maxCount;
         this.isCamera = isCamera;
         setImageSize(context, 3);
@@ -77,7 +81,10 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
             }
             holder.setData(mSelImages, mPhoto, maxCount, imageSize);
         } else {
-            holder.setCamera();
+            if (null != onCameraClickListener) {
+                holder.setOnCameraClickListener(onCameraClickListener);
+                holder.setCamera();
+            }
         }
     }
 
@@ -92,6 +99,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     }
 
     public boolean showCamera() {
-        return isCamera;
+        return (isCamera && 0 == mCurrDirIndex);
+    }
+
+    public void setCurrDirIndex(int currDirIndex) {
+        mCurrDirIndex = currDirIndex;
+    }
+
+    private View.OnClickListener onCameraClickListener = null;
+
+    public void setOnCameraClickListener(View.OnClickListener onCameraClickListener) {
+        this.onCameraClickListener = onCameraClickListener;
     }
 }

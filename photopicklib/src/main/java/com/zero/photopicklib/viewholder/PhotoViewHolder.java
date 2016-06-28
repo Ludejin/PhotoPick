@@ -1,7 +1,6 @@
 package com.zero.photopicklib.viewholder;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -66,8 +65,16 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
         thumbPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("事件", "点击拍照");
+                if (null != onCameraClickListener) {
+                    onCameraClickListener.onClick(v);
+                }
             }
         });
+    }
+
+    private View.OnClickListener onCameraClickListener = null;
+
+    public void setOnCameraClickListener(View.OnClickListener onCameraClickListener) {
+        this.onCameraClickListener = onCameraClickListener;
     }
 }

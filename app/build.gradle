@@ -10,6 +10,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        ndk {
+            moduleName "JniTest"
+            abiFilters "armeabi", "armeabi-v7a", "x86"
+            ldLibs "EGL", "GLESv3", "dl", "log"
+        }
     }
     buildTypes {
         release {

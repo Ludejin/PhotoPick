@@ -1,5 +1,6 @@
 package com.zero.photopicklib.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -27,8 +29,10 @@ import com.zero.photopicklib.entity.Photo;
 import com.zero.photopicklib.entity.PhotoDir;
 import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
+import com.zero.photopicklib.util.CaptureManager;
 import com.zero.photopicklib.util.StatusBarCompat;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +49,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private PopupDirAdapter mDirAdapter;
 
     private ListPopupWindow mPopupWindow;
+    private CaptureManager mCaptureManager;
 
     private AppCompatButton btnDir;
     public static int COUNT_MAX = 4;    //目录弹出框的一次最多显示的目录数目
@@ -52,10 +57,13 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private List<Photo> mPhotos = new ArrayList<>();
     private List<PhotoDir> mDirs = new ArrayList<>();
 
+    private String addPath;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_picker);
+
 
         StatusBarCompat.compat(this, ActivityCompat.getColor(this, R.color.colorPrimary));
 
@@ -64,6 +72,10 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
         mPresenter = new PickerPresenter(new PhotoRepository(),this,
                 this, false, false);
+
+        mPresenter.subscribe();
+
+        mCaptureManager = new CaptureManager(this);
 
         initToolbar();
 
@@ -78,6 +90,8 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPopupWindow.dismiss();
+
+                mPhotoAdapter.setCurrDirIndex(position);
 
                 PhotoDir directory = mDirs.get(position);
                 btnDir.setText(directory.getName());
@@ -136,6 +150,41 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         mRcyPhoto.setLayoutManager(layoutManager);
         mRcyPhoto.setAdapter(mPhotoAdapter);
         mRcyPhoto.setItemAnimator(new DefaultItemAnimator());
+
+        mPhotoAdapter.setOnCameraClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = null;
+                try {
+                    intent = mCaptureManager.dispatchTakePictureIntent();
+                    startActivityForResult(intent, CaptureManager.REQUEST_TAKE_PHOTO);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CaptureManager.REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            mCaptureManager.galleryAddPic();
+            if (mDirs.size() > 0) {
+                addPath = mCaptureManager.getCurrentPhotoPath();
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mCaptureManager.onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        mCaptureManager.onRestoreInstanceState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     public void adjustHeight() {
@@ -163,7 +212,15 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.subscribe();
+        if (null != addPath && !TextUtils.isEmpty(addPath)) {
+            PhotoDir directory = mDirs.get(0);
+            directory.getPhotos().add(0, new Photo(addPath.hashCode(), addPath));
+            directory.setCoverPath(addPath);
+
+            mPhotos.clear();
+            mPhotos.addAll(directory.getPhotos());
+            mPhotoAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

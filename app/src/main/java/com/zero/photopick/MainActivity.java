@@ -13,6 +13,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        JniUtil jni = new JniUtil();
+//        Log.i("结果", jni.append("你好", "世界"));
     }
 
     public void tiaozhuan(View view) {
