@@ -1,9 +1,13 @@
 package com.zero.photopicklib.viewholder;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.zero.photopicklib.R;
 import com.zero.photopicklib.entity.Photo;
 import com.zero.photopicklib.widget.ThumbPhotoView;
 
@@ -16,21 +20,26 @@ import java.util.ArrayList;
 public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
     public ThumbPhotoView thumbPhotoView;
+    private Context mContext;
+    private TextView mTitle;
 
-    public PhotoViewHolder(View itemView) {
+    public PhotoViewHolder(View itemView, Context context, TextView title) {
         super(itemView);
         thumbPhotoView = (ThumbPhotoView) itemView;
+        mContext = context;
+        mTitle = title;
     }
 
     /**
      * 绑定数据
-     * @param selectedImages    选择图片路径
-     * @param photo             图片
-     * @param maxPickSize       最大选择数量
-     * @param imageSize         图片显示大小
+     *
+     * @param selectedImages 选择图片路径
+     * @param photo          图片
+     * @param maxPickSize    最大选择数量
+     * @param imageSize      图片显示大小
      */
-    public void setData(final ArrayList<String> selectedImages, Photo photo,
-                        final int maxPickSize, int imageSize) {
+    public void setData(final ArrayList<String> selectedImages, Photo photo, final int maxPickSize,
+                        int imageSize) {
         thumbPhotoView.setLayoutParams(new FrameLayout.LayoutParams(imageSize, imageSize));
         thumbPhotoView.loadData(photo.getPath());
 
@@ -50,12 +59,16 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                     thumbPhotoView.showSelected(false);
                 } else {
                     if (selectedImages.size() == maxPickSize) {
+                        Toast.makeText(mContext, "最多选择" + maxPickSize + "张图片",
+                                Toast.LENGTH_SHORT).show();
                         return;
                     } else {
                         selectedImages.add(path);
                         thumbPhotoView.showSelected(true);
                     }
                 }
+                mTitle.setText(String.format(mContext.getString(R.string.picker_done_with_count),
+                        selectedImages.size(), maxPickSize));
             }
         });
     }

@@ -13,13 +13,13 @@ import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zero.photopicklib.R;
 import com.zero.photopicklib.adapter.PhotoAdapter;
@@ -30,6 +30,7 @@ import com.zero.photopicklib.entity.PhotoDir;
 import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
 import com.zero.photopicklib.util.CaptureManager;
+import com.zero.photopicklib.util.PickConfig;
 import com.zero.photopicklib.util.StatusBarCompat;
 
 import java.io.IOException;
@@ -51,13 +52,23 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private ListPopupWindow mPopupWindow;
     private CaptureManager mCaptureManager;
 
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
+
     private AppCompatButton btnDir;
     public static int COUNT_MAX = 4;    //目录弹出框的一次最多显示的目录数目
 
     private List<Photo> mPhotos = new ArrayList<>();
+    private ArrayList<String> selImages = new ArrayList<>();
     private List<PhotoDir> mDirs = new ArrayList<>();
 
     private String addPath;
+
+    private int spanCount;
+    private int maxPickSize;
+    private boolean showCamera;
+    private boolean showGif;
+    private Bundle mBundle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +81,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         mRcyPhoto = (RecyclerView) findViewById(R.id.rcy_picker);
         btnDir = (AppCompatButton) findViewById(R.id.btn_dir);
 
-        mPresenter = new PickerPresenter(new PhotoRepository(),this,
+        mPresenter = new PickerPresenter(new PhotoRepository(), this,
                 this, false, false);
 
         mPresenter.subscribe();
@@ -79,10 +90,19 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
         initToolbar();
 
+        initData();
+
         initRecycleView();
 
         initPopupWin();
         initEvent();
+    }
+
+    private void initData() {
+        mBundle = getIntent().getBundleExtra(PickConfig.EXTRA_PICK_BUNDLE);
+        spanCount = mBundle.getInt(PickConfig.EXTRA_SPAN_COUNT, PickConfig.DEFAULT_SPANCOUNT);
+        maxPickSize = mBundle.getInt(PickConfig.EXTRA_MAX_SIZE, PickConfig.DEFAULT_PICKSIZE);
+        selImages = mBundle.getStringArrayList(PickConfig.EXTRA_SEL_IMAGE);
     }
 
     private void initEvent() {
@@ -125,8 +145,8 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     private void initToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText("图片选择");
         setSupportActionBar(toolbar);
 
@@ -145,8 +165,9 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     private void initRecycleView() {
-        mPhotoAdapter = new PhotoAdapter(this, mPhotos, 6, true);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        mPhotoAdapter = new PhotoAdapter(this, mPhotos, selImages, maxPickSize,spanCount,
+                true, toolbar, toolbarTitle);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
         mRcyPhoto.setLayoutManager(layoutManager);
         mRcyPhoto.setAdapter(mPhotoAdapter);
         mRcyPhoto.setItemAnimator(new DefaultItemAnimator());
@@ -205,8 +226,16 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("选择长度", "" + mPhotoAdapter.getSelectedImages().size());
-        return super.onOptionsItemSelected(item);
+        ArrayList<String> selectedImages = mPhotoAdapter.getSelectedImages();
+        if (selectedImages.size() == 0) {
+            Toast.makeText(this, "请选择照片", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent();
+            intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAYLIST, selectedImages);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+        return true;
     }
 
     @Override

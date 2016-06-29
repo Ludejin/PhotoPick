@@ -2,10 +2,12 @@ package com.zero.photopicklib.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.zero.photopicklib.entity.Photo;
 import com.zero.photopicklib.viewholder.PhotoViewHolder;
@@ -24,22 +26,31 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     public final static int ITEM_TYPE_PHOTO  = 101;
 
     private Context mContext;
+    private Toolbar mToolbar;
+    private TextView mTitle;
     private List<Photo> mPhotos = new ArrayList<>();
     private ArrayList<String> mSelImages = new ArrayList<>();
     private int maxCount;
+    private int spanCount;
     private boolean isCamera;
 
     private int mCurrDirIndex = 0;
 
     private int imageSize;
 
-    public PhotoAdapter(Context context, List<Photo> photos, int maxCount, boolean isCamera) {
+    public PhotoAdapter(Context context, List<Photo> photos, ArrayList<String> selImages,
+                        int maxCount, int spanCount, boolean isCamera, Toolbar toolbar, TextView title) {
         mContext = context;
         mPhotos = photos;
+        mSelImages = selImages;
+        mToolbar = toolbar;
+        mTitle = title;
 
+        this.spanCount = spanCount;
         this.maxCount = maxCount;
         this.isCamera = isCamera;
-        setImageSize(context, 3);
+
+        setImageSize(context, this.spanCount);
     }
 
     @Override
@@ -67,7 +78,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
     @Override
     public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PhotoViewHolder(new ThumbPhotoView(mContext));
+        return new PhotoViewHolder(new ThumbPhotoView(mContext), mContext, mTitle);
     }
 
     @Override
@@ -79,6 +90,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
             } else {
                 mPhoto = mPhotos.get(position);
             }
+
             holder.setData(mSelImages, mPhoto, maxCount, imageSize);
         } else {
             if (null != onCameraClickListener) {
