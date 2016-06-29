@@ -33,6 +33,7 @@ dependencies {
 }
 
 def siteUrl = 'https://github.com/Ludejin/PhotoPick'    //Homepage URL of the library
+def gitUrl = 'https://github.com/Ludejin/PhotoPick.git'
 def issueUrl = 'https://github.com/Ludejin/PhotoPick/issues'    //issue url of the library
 group = "com.zero"    //
 install {
@@ -42,7 +43,7 @@ install {
             project {
                 packaging 'aar'
                 // Add your description here
-                name '这是一个简单的图片选择器'
+                name 'PhotoPick'
                 url siteUrl
                 // Set your license
                 licenses {
@@ -59,6 +60,8 @@ install {
                     }
                 }
                 scm {
+                    connection gitUrl
+                    developerConnection gitUrl
                     url siteUrl
                 }
             }
@@ -90,8 +93,9 @@ bintray {
     pkg {
         repo = "maven"    //发布到Bintray的哪个仓库
         name = "PhotoPick"    //发布到Bintray上的名字
-        desc = "这是一个简单的图片选择器."    //项目描述
+        desc = "A Simple PhotoPick lib."    //项目描述
         websiteUrl = siteUrl
+        vcsUrl = gitUrl
         issueTrackerUrl = issueUrl
         licenses = ["Apache-2.0"]
         labels = ['android']    //标签

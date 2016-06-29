@@ -2,11 +2,11 @@
 图片选择器
 
 ##使用
-new PickConfig.Builder(this)
-                .maxPickSize(5)             // 最大选择图片数量
-                .showGif(true)              // 是否展现Gif图片
-                .spanCount(3)               // Grid的列数
-                .setSelImage(mSelImages)    // 已选择的图片（避免重复选择或覆盖之前的选择）
+    new PickConfig.Builder(this)
+                .maxPickSize(5)             // 最大选择图片数量\<br>
+                .showGif(true)              // 是否展现Gif图片\<br>
+                .spanCount(3)               // Grid的列数\<br>
+                .setSelImage(mSelImages)    // 已选择的图片（避免重复选择或覆盖之前的选择）\<br>
                 .build();    
                                
 ##AndroidManifest.xml
