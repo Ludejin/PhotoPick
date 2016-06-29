@@ -31,12 +31,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
-     * 绑定数据
      *
-     * @param selectedImages 选择图片路径
-     * @param photo          图片
-     * @param maxPickSize    最大选择数量
-     * @param imageSize      图片显示大小
      */
     public void setData(final ArrayList<String> selectedImages, Photo photo, final int maxPickSize,
                         int imageSize) {
@@ -59,7 +54,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                     thumbPhotoView.showSelected(false);
                 } else {
                     if (selectedImages.size() == maxPickSize) {
-                        Toast.makeText(mContext, "最多选择" + maxPickSize + "张图片",
+                        Toast.makeText(mContext, "More Select " + maxPickSize + "Photos",
                                 Toast.LENGTH_SHORT).show();
                         return;
                     } else {

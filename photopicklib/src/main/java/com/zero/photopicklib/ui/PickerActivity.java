@@ -56,7 +56,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private TextView toolbarTitle;
 
     private AppCompatButton btnDir;
-    public static int COUNT_MAX = 4;    //目录弹出框的一次最多显示的目录数目
+    public static int COUNT_MAX = 4;
 
     private List<Photo> mPhotos = new ArrayList<>();
     private ArrayList<String> selImages = new ArrayList<>();
@@ -228,7 +228,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     public boolean onOptionsItemSelected(MenuItem item) {
         ArrayList<String> selectedImages = mPhotoAdapter.getSelectedImages();
         if (selectedImages.size() == 0) {
-            Toast.makeText(this, "请选择照片", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Select Photo", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent();
             intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAYLIST, selectedImages);

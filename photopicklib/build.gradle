@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+version = "0.1.0"   //版本号，以后每次更新library都得更改
 
 android {
     compileSdkVersion 23
@@ -8,7 +11,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
     }
     buildTypes {
         release {
@@ -27,4 +30,72 @@ dependencies {
     compile rootProject.ext.libRxAndroid
     compile rootProject.ext.libRxJava
     compile rootProject.ext.libGlide
+}
+
+def siteUrl = 'https://github.com/Ludejin/PhotoPick'    //Homepage URL of the library
+def issueUrl = 'https://github.com/Ludejin/PhotoPick/issues'    //issue url of the library
+group = "com.zero"    //
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                // Add your description here
+                name '这是一个简单的图片选择器'
+                url siteUrl
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id 'Zero' //your user ID
+                        name 'Zero' //your name
+                        email 'Jin_Zboy@163.com' //your email
+                    }
+                }
+                scm {
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"    //发布到Bintray的哪个仓库
+        name = "PhotoPick"    //发布到Bintray上的名字
+        desc = "这是一个简单的图片选择器."    //项目描述
+        websiteUrl = siteUrl
+        issueTrackerUrl = issueUrl
+        licenses = ["Apache-2.0"]
+        labels = ['android']    //标签
+        publish = true
+        publicDownloadNumbers = true
+    }
 }

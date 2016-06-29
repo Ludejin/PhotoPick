@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
  */
 public class BitmapUtil {
     /**
-     * 检查文件是否损坏
+     *
      * Check if the file is corrupted
      * @param filePath
      * @return
