@@ -10,7 +10,8 @@
                 .build();    
                                
 ##AndroidManifest.xml
-<activity android:name="com.zero.photopicklib.ui.PickerActivity"/>
+
+    <activity android:name="com.zero.photopicklib.ui.PickerActivity"/>
 其他属性随意（但是Theme一定是要居于NoActionBar，否则会报错，因为这里用Toolbar来实现，
 为了以后实现自定义toolbar）
 
