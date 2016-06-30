@@ -2,7 +2,6 @@
 <resources>
     <style name="AppTheme" parent="BaseAppTheme">
         <item name="android:windowTranslucentStatus">true</item>
-
         <!--<item name="actionOverflowMenuStyle">@style/OverflowMenu</item>-->
     </style>
 

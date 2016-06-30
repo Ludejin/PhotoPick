@@ -154,21 +154,20 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
         StatusBarCompat.compat(this, ActivityCompat.getColor(this, toolbarColor));
         toolbar.setBackgroundResource(toolbarColor);
-
-        ActionBar mActionBar = getSupportActionBar();
-        if (null != mActionBar) {
-            mActionBar.setElevation(0);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-            mActionBar.setHomeAsUpIndicator(R.drawable.ic_go_back);
-        }
-
+        toolbar.setNavigationIcon(R.drawable.ic_go_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        ActionBar mActionBar = getSupportActionBar();
+        if (null != mActionBar) {
+            mActionBar.setElevation(0);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void initRecycleView() {

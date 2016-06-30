@@ -9,9 +9,11 @@
 
         <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
 
         <item name="android:actionBarSize">48dp</item>
         <item name="actionBarSize">48dp</item>
+
     </style>
 
     <style name="AppTheme" parent="BaseAppTheme">
