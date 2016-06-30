@@ -7,6 +7,7 @@
                 .showGif(true)              // 是否展现Gif图片
                 .spanCount(3)               // Grid的列数
                 .setSelImage(mSelImages)    // 已选择的图片（避免重复选择或覆盖之前的选择）
+                .toolbarColor(R.color.toolbarColor) // toolbar颜色设置
                 .build();    
                                
 ##AndroidManifest.xml
