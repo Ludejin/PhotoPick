@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
                 .maxPickSize(5)
                 .showGif(true)
                 .spanCount(3)
+                .toolbarColor(R.color.toolbarColor)
                 .setSelImage(mSelImages)
                 .build();
     }
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (PickConfig.PICK_REQUEST_CODE == requestCode) {
-            mSelImages = data.getStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAYLIST);
+            mSelImages = data.getStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAY_LIST);
             Log.i("选择长度", mSelImages.size() + "");
         }
     }

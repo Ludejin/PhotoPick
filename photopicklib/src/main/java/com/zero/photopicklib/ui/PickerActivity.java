@@ -66,6 +66,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
     private int spanCount;
     private int maxPickSize;
+    private int toolbarColor;
     private boolean showCamera;
     private boolean showGif;
     private Bundle mBundle;
@@ -88,9 +89,9 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
         mCaptureManager = new CaptureManager(this);
 
-        initToolbar();
-
         initData();
+
+        initToolbar();
 
         initRecycleView();
 
@@ -100,8 +101,9 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
     private void initData() {
         mBundle = getIntent().getBundleExtra(PickConfig.EXTRA_PICK_BUNDLE);
-        spanCount = mBundle.getInt(PickConfig.EXTRA_SPAN_COUNT, PickConfig.DEFAULT_SPANCOUNT);
-        maxPickSize = mBundle.getInt(PickConfig.EXTRA_MAX_SIZE, PickConfig.DEFAULT_PICKSIZE);
+        spanCount = mBundle.getInt(PickConfig.EXTRA_SPAN_COUNT, PickConfig.DEFAULT_SPAN_COUNT);
+        maxPickSize = mBundle.getInt(PickConfig.EXTRA_MAX_SIZE, PickConfig.DEFAULT_PICK_SIZE);
+        toolbarColor = mBundle.getInt(PickConfig.EXTRA_TOOLBAR_COLOR, PickConfig.DEFALUT_TOOLBAR_COLOR);
         selImages = mBundle.getStringArrayList(PickConfig.EXTRA_SEL_IMAGE);
     }
 
@@ -150,11 +152,16 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         toolbarTitle.setText("图片选择");
         setSupportActionBar(toolbar);
 
+        StatusBarCompat.compat(this, ActivityCompat.getColor(this, toolbarColor));
+        toolbar.setBackgroundResource(toolbarColor);
+
         ActionBar mActionBar = getSupportActionBar();
-        mActionBar.setElevation(0);
-        mActionBar.setDisplayShowTitleEnabled(false);
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setHomeAsUpIndicator(R.drawable.ic_go_back);
+        if (null != mActionBar) {
+            mActionBar.setElevation(0);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+            mActionBar.setHomeAsUpIndicator(R.drawable.ic_go_back);
+        }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +172,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     private void initRecycleView() {
-        mPhotoAdapter = new PhotoAdapter(this, mPhotos, selImages, maxPickSize,spanCount,
+        mPhotoAdapter = new PhotoAdapter(this, mPhotos, selImages, maxPickSize, spanCount,
                 true, toolbar, toolbarTitle);
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
         mRcyPhoto.setLayoutManager(layoutManager);
@@ -231,7 +238,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             Toast.makeText(this, "Please Select Photo", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent();
-            intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAYLIST, selectedImages);
+            intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAY_LIST, selectedImages);
             setResult(RESULT_OK, intent);
             finish();
         }

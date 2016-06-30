@@ -46,9 +46,9 @@ public class ThumbPhotoView extends RelativeLayout {
     public void loadData(String folderPath) {
         Glide.with(getContext())
                 .load(folderPath)
-                .placeholder(R.drawable.ic_broken_image)
+                .placeholder(R.drawable.ic_photo)
                 .thumbnail(0.5f)
-                .error(R.drawable.ic_broken_image)
+                .error(R.drawable.ic_broken_img)
                 .into(photo_thumbview);
         photo_thumbview_selected.setVisibility(VISIBLE);
     }
@@ -60,9 +60,9 @@ public class ThumbPhotoView extends RelativeLayout {
 
     public void showSelected(boolean showSelected) {
         if (showSelected) {
-            photo_thumbview_selected.setBackgroundResource(R.drawable.photo_selected);
+            photo_thumbview_selected.setBackgroundResource(R.drawable.img_select);
         } else {
-            photo_thumbview_selected.setBackgroundResource(R.drawable.photo_unselected);
+            photo_thumbview_selected.setBackgroundResource(R.drawable.img_unselect);
         }
     }
 }

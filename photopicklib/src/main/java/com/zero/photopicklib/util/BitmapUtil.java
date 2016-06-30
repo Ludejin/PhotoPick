@@ -9,8 +9,8 @@ public class BitmapUtil {
     /**
      *
      * Check if the file is corrupted
-     * @param filePath
-     * @return
+     * @param filePath  file path
+     * @return  file is corrupted?
      */
     public static boolean checkImgCorrupted(String filePath) {
         BitmapFactory.Options options = null;
