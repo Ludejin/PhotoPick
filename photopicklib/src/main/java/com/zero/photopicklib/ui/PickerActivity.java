@@ -119,7 +119,9 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPopupWindow.dismiss();
                 mDirIndex = position;
+
                 mPhotoAdapter.setCurrDirIndex(position);
+                mDirAdapter.setSelPos(mDirIndex);
 
                 PhotoDir directory = mDirs.get(position);
                 btnDir.setText(directory.getName());
@@ -157,7 +159,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
-        toolbarTitle.setText("图片选择");
+        toolbarTitle.setText(getString(R.string.picker_title));
         setSupportActionBar(toolbar);
 
         StatusBarCompat.compat(this, ActivityCompat.getColor(this, toolbarColor));
@@ -276,6 +278,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     public void getPhotoSuc(List<PhotoDir> photoDirs) {
         mDirs.clear();
         mDirs.addAll(photoDirs);
+        mDirAdapter.setSelPos(0);
         mDirAdapter.notifyDataSetChanged();
 
         mPhotos.clear();

@@ -16,19 +16,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#aa000000"
+        android:layout_height="@dimen/dir_height"
+        android:background="@color/bg_dir"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_dir"
+            android:id="@id/btn_dir"
             style="@style/Widget.AppCompat.ActionButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="@android:color/white"
             android:drawableRight="@drawable/text_indicator"
-            android:drawablePadding="4dp"
-            android:text="所有图片"/>
+            android:drawablePadding="@dimen/dimen_12"
+            android:text="@string/picker_all_image"/>
     </LinearLayout>
 </RelativeLayout>

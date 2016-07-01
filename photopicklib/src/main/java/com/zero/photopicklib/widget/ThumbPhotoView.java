@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zero.photopicklib.R;
@@ -17,8 +16,6 @@ public class ThumbPhotoView extends RelativeLayout {
     ImageView photo_thumbview;
 
     ImageView photo_thumbview_selected;
-
-    TextView photo_thumbview_position;
 
     public ThumbPhotoView(Context context) {
         super(context);
@@ -39,7 +36,6 @@ public class ThumbPhotoView extends RelativeLayout {
         View view = inflate(context, R.layout.item_photo, this);
         photo_thumbview = (ImageView) view.findViewById(R.id.photo_thumbview);
         photo_thumbview_selected = (ImageView) view.findViewById(R.id.photo_thumbview_selected);
-        photo_thumbview_position = (TextView) view.findViewById(R.id.photo_thumbview_position);
     }
 
 
@@ -60,17 +56,13 @@ public class ThumbPhotoView extends RelativeLayout {
 
     public void showSelected(boolean showSelected) {
         if (showSelected) {
-            photo_thumbview_selected.setBackgroundResource(R.drawable.img_select);
+            photo_thumbview_selected.setImageResource(R.drawable.img_select);
         } else {
-            photo_thumbview_selected.setBackgroundResource(R.drawable.img_unselect);
+            photo_thumbview_selected.setImageResource(R.drawable.img_unselect);
         }
     }
 
     public ImageView getPhoto_thumbview_selected() {
         return photo_thumbview_selected;
-    }
-
-    public TextView getPhoto_thumbview_position() {
-        return photo_thumbview_position;
     }
 }

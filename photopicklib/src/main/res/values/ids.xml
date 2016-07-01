@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="toolbar" type="id"/>
-    <item name="recyclerview" type="id"/>
+    <item name="toolbar_title" type="id" />
 
-    <!--menu action-->
-    <item name="action_finish" type="id"/>
-
-    <!--pick photos-->
-    <item name="photo_footer" type="id"/>
-    <item name="btn_category" type="id"/>
-    <item name="preview" type="id"/>
-    <item name="photo_album_cover"  type="id"/>
-    <item name="photo_album_dis_name"  type="id"/>
-    <item name="photo_album_element_count"  type="id"/>
-    <item name="photo_album_selected"  type="id"/>
     <item name="photo_thumbview" type="id"/>
-    <item name="photo_thumbview_position" type="id"/>
     <item name="photo_thumbview_selected" type="id"/>
+
+    <item name="btn_dir" type="id"/>
+    <item name="iv_dir_cover" type="id"/>
+    <item name="iv_dir_sel" type="id"/>
+    <item name="tv_dir_name" type="id"/>
+    <item name="tv_dir_count" type="id"/>
 </resources>

@@ -14,14 +14,16 @@ import com.zero.photopicklib.entity.PhotoDir;
  * 邮箱：dejin_lu@creawor.com
  */
 public class DirViewHolder {
-    public ImageView ivCover;
-    public TextView tvName;
-    public TextView tvCount;
+    private ImageView ivCover;
+    private TextView tvName;
+    private TextView tvCount;
+    private ImageView ivSel;
 
     public DirViewHolder(View rootView) {
         ivCover = (ImageView) rootView.findViewById(R.id.iv_dir_cover);
         tvName = (TextView) rootView.findViewById(R.id.tv_dir_name);
         tvCount = (TextView) rootView.findViewById(R.id.tv_dir_count);
+        ivSel = (ImageView) rootView.findViewById(R.id.iv_dir_sel);
     }
 
     public void bindData(Context context, PhotoDir photoDir) {
@@ -30,6 +32,12 @@ public class DirViewHolder {
                 .dontAnimate()
                 .thumbnail(0.1f)
                 .into(ivCover);
+
+        ivSel.setVisibility(View.INVISIBLE);
+        if (photoDir.isSel()) {
+            ivSel.setVisibility(View.VISIBLE);
+        }
+
         tvName.setText(photoDir.getName());
         tvCount.setText(tvCount.getContext().getString(
                 R.string.picker_image_count, photoDir.getPhotos().size()));

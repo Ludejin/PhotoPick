@@ -14,6 +14,7 @@ public class PhotoDir {
     private String name;
     private long dateAdded;
     private List<Photo> photos = new ArrayList<>();
+    private boolean isSel;
 
     @Override
     public boolean equals(Object o) {
@@ -47,6 +48,14 @@ public class PhotoDir {
 
     public void setCoverPath(String coverPath) {
         this.coverPath = coverPath;
+    }
+
+    public boolean isSel() {
+        return isSel;
+    }
+
+    public void setSel(boolean sel) {
+        isSel = sel;
     }
 
     public String getName() {

@@ -55,7 +55,14 @@ public class PopupDirAdapter extends BaseAdapter {
         }
 
         holder.bindData(mContext, mPhotoDirs.get(position));
-
         return convertView;
+    }
+
+    public void setSelPos(int selPos) {
+        for (PhotoDir mDir : mPhotoDirs) {
+            mDir.setSel(false);
+        }
+        mPhotoDirs.get(selPos).setSel(true);
+        notifyDataSetChanged();
     }
 }

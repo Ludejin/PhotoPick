@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="bg_pager">#dd000000</color>
+    <color name="bg_dir">#99000000</color>
 </resources>

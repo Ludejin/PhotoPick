@@ -61,7 +61,8 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                     thumbPhotoView.showSelected(false);
                 } else {
                     if (selectedImages.size() == maxPickSize) {
-                        Toast.makeText(mContext, "Select up to " + maxPickSize + "photos",
+                        Toast.makeText(mContext, String.format(mContext
+                                .getString(R.string.picker_over_max_count_tips),maxPickSize),
                                 Toast.LENGTH_SHORT).show();
                         return;
                     } else {

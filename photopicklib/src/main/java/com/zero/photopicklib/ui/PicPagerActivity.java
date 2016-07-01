@@ -2,10 +2,15 @@ package com.zero.photopicklib.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.zero.photopicklib.R;
 import com.zero.photopicklib.adapter.PhotoPagerAdapter;
+import com.zero.photopicklib.util.StatusBarCompat;
 import com.zero.photopicklib.widget.PinchImageViewPager;
 
 import java.util.ArrayList;
@@ -25,13 +30,38 @@ public class PicPagerActivity extends AppCompatActivity {
     private PinchImageViewPager mViewPager;
     private PhotoPagerAdapter mPagerAdapter;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_pic_pager);
 
+        initToolbar();
+
         initData();
         initView();
+    }
+
+    private void initToolbar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        StatusBarCompat.compat(this, ActivityCompat.getColor(this, android.R.color.transparent));
+        mToolbar.setNavigationIcon(R.drawable.ic_go_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        ActionBar mActionBar = getSupportActionBar();
+        if (null != mActionBar) {
+            mActionBar.setElevation(0);
+            mActionBar.setDisplayShowTitleEnabled(false);
+            mActionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void initView() {
