@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.zero.photopicklib.R;
 import com.zero.photopicklib.widget.PinchImageView;
 import com.zero.photopicklib.widget.PinchImageViewPager;
@@ -32,6 +33,25 @@ public class PhotoPagerAdapter extends PagerAdapter {
         mContext = context;
     }
 
+    private void loadPhoto(String path, PinchImageView mPinchImageView) {
+        final Uri uri;
+        if (path.startsWith("http")) {
+            uri = Uri.parse(path);
+        } else {
+            uri = Uri.fromFile(new File(path));
+        }
+
+        Glide.with(mContext)
+                .load(uri)
+                .dontAnimate()
+                .dontTransform()
+                .thumbnail(0.5f)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_photo)
+                .error(R.drawable.ic_broken_img)
+                .into(mPinchImageView);
+    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
@@ -45,20 +65,7 @@ public class PhotoPagerAdapter extends PagerAdapter {
         }
 
         final String path = mPaths.get(position);
-        final Uri uri;
-        if (path.startsWith("http")) {
-            uri = Uri.parse(path);
-        } else {
-            uri = Uri.fromFile(new File(path));
-        }
-
-        Glide.with(mContext)
-                .load(uri)
-                .dontAnimate()
-                .dontTransform()
-                .placeholder(R.drawable.ic_photo)
-                .error(R.drawable.ic_broken_img)
-                .into(mPinchImageView);
+        loadPhoto(path, mPinchImageView);
 
         container.addView(mPinchImageView);
 
@@ -79,16 +86,13 @@ public class PhotoPagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         PinchImageView pinchImageView = (PinchImageView) object;
         container.removeView(pinchImageView);
-        Glide.clear(pinchImageView);
         viewCache.add(pinchImageView);
+        Glide.clear(pinchImageView);
     }
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         PinchImageView piv = (PinchImageView) object;
-        Glide.with(mContext)
-                .load(mPaths.get(position))
-                .into(piv);
         mViewPager.setMainPinchImageView(piv);
     }
 }
