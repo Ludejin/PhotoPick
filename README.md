@@ -13,6 +13,7 @@
 ##AndroidManifest.xml
 
     <activity android:name="com.zero.photopicklib.ui.PickerActivity"/>
+    <activity android:name="com.zero.photopicklib.ui.PicPagerActivity"/>
 其他属性随意（但是Theme一定是要基于NoActionBar，否则会报错，因为这里用Toolbar来实现，
 为了以后实现自定义toolbar）
 
@@ -31,4 +32,5 @@
 
 ##感谢
 [Android-PickPhotos](https://github.com/crosswall/Android-PickPhotos) <br/>
-[TODO-MVP-RXJAVA](https://github.com/googlesamples/android-architecture/tree/dev-todo-mvp-rxjava/)
+[TODO-MVP-RXJAVA](https://github.com/googlesamples/android-architecture/tree/dev-todo-mvp-rxjava/) <br/>
+[PinchImageView](https://github.com/boycy815/PinchImageView)

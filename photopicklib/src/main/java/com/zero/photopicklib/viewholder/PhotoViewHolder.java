@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.zero.photopicklib.R;
 import com.zero.photopicklib.entity.Photo;
+import com.zero.photopicklib.event.OnPhotoClickListener;
 import com.zero.photopicklib.widget.ThumbPhotoView;
 
 import java.util.ArrayList;
@@ -23,6 +24,12 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
     private Context mContext;
     private TextView mTitle;
 
+    private OnPhotoClickListener mPhotoClickListener;
+
+    public void setPhotoClickListener(OnPhotoClickListener photoClickListener) {
+        mPhotoClickListener = photoClickListener;
+    }
+
     public PhotoViewHolder(View itemView, Context context, TextView title) {
         super(itemView);
         thumbPhotoView = (ThumbPhotoView) itemView;
@@ -34,7 +41,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
      *
      */
     public void setData(final ArrayList<String> selectedImages, Photo photo, final int maxPickSize,
-                        int imageSize) {
+                        final int imageSize, final int pos) {
         thumbPhotoView.setLayoutParams(new FrameLayout.LayoutParams(imageSize, imageSize));
         thumbPhotoView.loadData(photo.getPath());
 
@@ -46,7 +53,7 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
         final String path = photo.getPath();
 
-        thumbPhotoView.setOnClickListener(new View.OnClickListener() {
+        thumbPhotoView.getPhoto_thumbview_selected().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (selectedImages.contains(path)) {
@@ -64,6 +71,15 @@ public class PhotoViewHolder extends RecyclerView.ViewHolder {
                 }
                 mTitle.setText(String.format(mContext.getString(R.string.picker_done_with_count),
                         selectedImages.size(), maxPickSize));
+            }
+        });
+
+        thumbPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != mPhotoClickListener) {
+                    mPhotoClickListener.OnClick(v, pos, imageSize);
+                }
             }
         });
     }

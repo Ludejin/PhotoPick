@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.zero.photopicklib.ui.PickerActivity"/>
+        <activity android:name="com.zero.photopicklib.ui.PicPagerActivity"/>
     </application>
 
 </manifest>

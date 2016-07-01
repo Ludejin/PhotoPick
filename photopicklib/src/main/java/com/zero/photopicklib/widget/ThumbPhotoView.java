@@ -65,4 +65,12 @@ public class ThumbPhotoView extends RelativeLayout {
             photo_thumbview_selected.setBackgroundResource(R.drawable.img_unselect);
         }
     }
+
+    public ImageView getPhoto_thumbview_selected() {
+        return photo_thumbview_selected;
+    }
+
+    public TextView getPhoto_thumbview_position() {
+        return photo_thumbview_position;
+    }
 }

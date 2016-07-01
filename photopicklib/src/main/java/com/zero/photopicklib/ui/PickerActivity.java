@@ -27,6 +27,7 @@ import com.zero.photopicklib.adapter.PopupDirAdapter;
 import com.zero.photopicklib.data.PhotoRepository;
 import com.zero.photopicklib.entity.Photo;
 import com.zero.photopicklib.entity.PhotoDir;
+import com.zero.photopicklib.event.OnPhotoClickListener;
 import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
 import com.zero.photopicklib.util.CaptureManager;
@@ -37,11 +38,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zero.photopicklib.ui.PicPagerActivity.EXTRA_PATH;
+import static com.zero.photopicklib.ui.PicPagerActivity.EXTRA_ITEM;
+
 /**
  * Created by Jin_ on 2016/6/11
  * 邮箱：dejin_lu@creawor.com
  */
-public class PickerActivity extends AppCompatActivity implements PickerContract.View {
+public class PickerActivity extends AppCompatActivity implements PickerContract.View,
+        OnPhotoClickListener {
 
     private PickerPresenter mPresenter;
 
@@ -61,6 +66,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private List<Photo> mPhotos = new ArrayList<>();
     private ArrayList<String> selImages = new ArrayList<>();
     private List<PhotoDir> mDirs = new ArrayList<>();
+    private int mDirIndex = 0;
 
     private String addPath;
 
@@ -112,7 +118,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mPopupWindow.dismiss();
-
+                mDirIndex = position;
                 mPhotoAdapter.setCurrDirIndex(position);
 
                 PhotoDir directory = mDirs.get(position);
@@ -133,6 +139,8 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
                 }
             }
         });
+
+        mPhotoAdapter.setOnPhotoClickListener(this);
     }
 
     private void initPopupWin() {
@@ -278,5 +286,16 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     @Override
     public void setPresenter(PickerPresenter presenter) {
         mPresenter = presenter;
+    }
+
+    @Override
+    public void OnClick(View view, int pos, int imgSize) {
+        Intent intent = new Intent();
+        intent.setClass(this, PicPagerActivity.class);
+
+        intent.putExtra(EXTRA_ITEM, pos);
+        intent.putStringArrayListExtra(EXTRA_PATH, mDirs.get(mDirIndex).getPhotoPaths());
+
+        startActivity(intent);
     }
 }

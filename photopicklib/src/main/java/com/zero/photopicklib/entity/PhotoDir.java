@@ -73,8 +73,8 @@ public class PhotoDir {
         this.photos = photos;
     }
 
-    public List<String> getPhotoPaths() {
-        List<String> paths = new ArrayList<>(photos.size());
+    public ArrayList<String> getPhotoPaths() {
+        ArrayList<String> paths = new ArrayList<>(photos.size());
         for (Photo photo : photos) {
             paths.add(photo.getPath());
         }

@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zero.photopicklib.entity.Photo;
+import com.zero.photopicklib.event.OnPhotoClickListener;
 import com.zero.photopicklib.viewholder.PhotoViewHolder;
 import com.zero.photopicklib.widget.ThumbPhotoView;
 
@@ -84,18 +85,22 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     @Override
     public void onBindViewHolder(PhotoViewHolder holder, int position) {
         if (ITEM_TYPE_PHOTO == getItemViewType(position)) {
-            Photo mPhoto;
+            int photoIndex;
             if (showCamera()) {
-                mPhoto = mPhotos.get(position - 1);
+                photoIndex = position - 1;
             } else {
-                mPhoto = mPhotos.get(position);
+                photoIndex = position;
             }
+            Photo mPhoto = mPhotos.get(photoIndex);
+            holder.setData(mSelImages, mPhoto, maxCount, imageSize, photoIndex);
 
-            holder.setData(mSelImages, mPhoto, maxCount, imageSize);
+            if (null != mOnPhotoClickListener) {
+                holder.setPhotoClickListener(mOnPhotoClickListener);
+            }
         } else {
+            holder.setCamera();
             if (null != onCameraClickListener) {
                 holder.setOnCameraClickListener(onCameraClickListener);
-                holder.setCamera();
             }
         }
     }
@@ -119,8 +124,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     }
 
     private View.OnClickListener onCameraClickListener = null;
+    private OnPhotoClickListener mOnPhotoClickListener = null;
 
     public void setOnCameraClickListener(View.OnClickListener onCameraClickListener) {
         this.onCameraClickListener = onCameraClickListener;
+    }
+
+    public void setOnPhotoClickListener(OnPhotoClickListener onPhotoClickListener) {
+        mOnPhotoClickListener = onPhotoClickListener;
     }
 }
