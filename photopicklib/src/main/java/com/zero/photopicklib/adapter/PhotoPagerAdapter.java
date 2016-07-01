@@ -27,6 +27,12 @@ public class PhotoPagerAdapter extends PagerAdapter {
     private PinchImageViewPager mViewPager;
     private Context mContext;
 
+    private View.OnClickListener itemListener;
+
+    public void setItemListener(View.OnClickListener itemListener) {
+        this.itemListener = itemListener;
+    }
+
     public PhotoPagerAdapter(ArrayList<String> paths, PinchImageViewPager viewPager, Context context) {
         mPaths = paths;
         mViewPager = viewPager;
@@ -63,6 +69,15 @@ public class PhotoPagerAdapter extends PagerAdapter {
         } else {
             mPinchImageView = new PinchImageView(mContext);
         }
+
+        mPinchImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (null != itemListener) {
+                    itemListener.onClick(v);
+                }
+            }
+        });
 
         final String path = mPaths.get(position);
         loadPhoto(path, mPinchImageView);

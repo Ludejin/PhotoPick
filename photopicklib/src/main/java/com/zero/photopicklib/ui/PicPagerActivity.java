@@ -41,6 +41,16 @@ public class PicPagerActivity extends AppCompatActivity {
 
         initData();
         initView();
+        initEvent();
+    }
+
+    private void initEvent() {
+        mPagerAdapter.setItemListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PicPagerActivity.this.finish();
+            }
+        });
     }
 
     private void initToolbar() {

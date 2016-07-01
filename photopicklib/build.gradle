@@ -25,8 +25,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
 
-    compile 'com.nineoldandroids:library:2.4.0'
-
     compile rootProject.ext.libSupportAppcompat
     compile rootProject.ext.libSupportDesign
     compile rootProject.ext.libSupportV4
