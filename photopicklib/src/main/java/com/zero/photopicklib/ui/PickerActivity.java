@@ -13,6 +13,7 @@ import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import com.zero.photopicklib.event.OnPhotoClickListener;
 import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
 import com.zero.photopicklib.util.CaptureManager;
+import com.zero.photopicklib.util.FileSizeUtil;
 import com.zero.photopicklib.util.PickConfig;
 import com.zero.photopicklib.util.StatusBarCompat;
 
@@ -38,8 +40,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zero.photopicklib.ui.PicPagerActivity.EXTRA_PATH;
 import static com.zero.photopicklib.ui.PicPagerActivity.EXTRA_ITEM;
+import static com.zero.photopicklib.ui.PicPagerActivity.EXTRA_PATH;
 
 /**
  * Created by Jin_ on 2016/6/11
@@ -75,6 +77,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private int toolbarColor;
     private boolean showCamera;
     private boolean showGif;
+    private boolean isCompress;
     private Bundle mBundle;
 
     @Override
@@ -109,7 +112,8 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         mBundle = getIntent().getBundleExtra(PickConfig.EXTRA_PICK_BUNDLE);
         spanCount = mBundle.getInt(PickConfig.EXTRA_SPAN_COUNT, PickConfig.DEFAULT_SPAN_COUNT);
         maxPickSize = mBundle.getInt(PickConfig.EXTRA_MAX_SIZE, PickConfig.DEFAULT_PICK_SIZE);
-        toolbarColor = mBundle.getInt(PickConfig.EXTRA_TOOLBAR_COLOR, PickConfig.DEFALUT_TOOLBAR_COLOR);
+        toolbarColor = mBundle.getInt(PickConfig.EXTRA_TOOLBAR_COLOR, PickConfig.DEFAULT_TOOLBAR_COLOR);
+        isCompress = mBundle.getBoolean(PickConfig.EXTRA_IS_COMPRESS, PickConfig.DEFAULT_COMPRESS);
         selImages = mBundle.getStringArrayList(PickConfig.EXTRA_SEL_IMAGE);
     }
 
@@ -242,10 +246,21 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        ArrayList<String> selectedImages = mPhotoAdapter.getSelectedImages();
-        if (selectedImages.size() == 0) {
-            Toast.makeText(this, "Please Select Photo", Toast.LENGTH_SHORT).show();
+        ArrayList<String> selectedImages;
+        if (isCompress) {
+            selectedImages = mPhotoAdapter.getCompressImages();
         } else {
+            selectedImages = mPhotoAdapter.getSelectedImages();
+        }
+
+        if (selectedImages.size() == 0) {
+            Toast.makeText(this, getString(R.string.picker_please_sel_photo),
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            for (String path : selectedImages) {
+                Log.i("路径", path);
+                Log.i("大小", FileSizeUtil.getAutoFileOrFilesSize(path));
+            }
             Intent intent = new Intent();
             intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAY_LIST, selectedImages);
             setResult(RESULT_OK, intent);

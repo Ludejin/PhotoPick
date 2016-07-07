@@ -33,6 +33,17 @@ public class MainActivity extends AppCompatActivity {
                 .build();
     }
 
+    public void tiaocompress(View view) {
+        new PickConfig.Builder(this)
+                .maxPickSize(5)
+                .showGif(true)
+                .spanCount(3)
+                .compress(true)
+                .toolbarColor(R.color.toolbarColor)
+                .setSelImage(mSelImages)
+                .build();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

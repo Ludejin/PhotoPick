@@ -5,6 +5,7 @@
     new PickConfig.Builder(this)
                 .maxPickSize(5)             // 最大选择图片数量
                 .showGif(true)              // 是否展现Gif图片
+                .compress(true)             // 是否压缩图片
                 .spanCount(3)               // Grid的列数
                 .setSelImage(mSelImages)    // 已选择的图片（避免重复选择或覆盖之前的选择）
                 .toolbarColor(R.color.toolbarColor) // toolbar颜色设置
