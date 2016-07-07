@@ -13,7 +13,6 @@ import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +31,6 @@ import com.zero.photopicklib.event.OnPhotoClickListener;
 import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
 import com.zero.photopicklib.util.CaptureManager;
-import com.zero.photopicklib.util.FileSizeUtil;
 import com.zero.photopicklib.util.PickConfig;
 import com.zero.photopicklib.util.StatusBarCompat;
 
@@ -257,10 +255,10 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             Toast.makeText(this, getString(R.string.picker_please_sel_photo),
                     Toast.LENGTH_SHORT).show();
         } else {
-            for (String path : selectedImages) {
-                Log.i("路径", path);
-                Log.i("大小", FileSizeUtil.getAutoFileOrFilesSize(path));
-            }
+//            for (String path : selectedImages) {
+//                Log.i("路径", path);
+//                Log.i("大小", FileSizeUtil.getAutoFileOrFilesSize(path));
+//            }
             Intent intent = new Intent();
             intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAY_LIST, selectedImages);
             setResult(RESULT_OK, intent);
