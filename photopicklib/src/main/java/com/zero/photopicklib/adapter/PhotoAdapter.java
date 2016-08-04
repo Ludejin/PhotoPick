@@ -1,9 +1,6 @@
 package com.zero.photopicklib.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -14,12 +11,9 @@ import android.widget.TextView;
 
 import com.zero.photopicklib.entity.Photo;
 import com.zero.photopicklib.event.OnPhotoClickListener;
-import com.zero.photopicklib.util.DensityUtils;
-import com.zero.photopicklib.util.FileSizeUtil;
 import com.zero.photopicklib.viewholder.PhotoViewHolder;
 import com.zero.photopicklib.widget.ThumbPhotoView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,28 +109,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
     public int getItemCount() {
         int mCount = mPhotos.size();
         return showCamera() ? mCount + 1 : mCount;
-    }
-
-    public ArrayList<String> getCompressImages() {
-        ArrayList<String> compressSelImages = new ArrayList<>();
-        for (String selImg : mSelImages) {
-            File file = new File(selImg);
-            BitmapFactory.Options options = FileSizeUtil.getBitmapOptions(file.getPath());
-            int screenMax = Math.max(DensityUtils.getWindowWidth((Activity) mContext),
-                    DensityUtils.getWindowHeight((Activity) mContext));
-            int imgMax = Math.max(options.outWidth, options.outHeight);
-            int inSimpleSize = 1;
-            if (screenMax <= imgMax) {
-                inSimpleSize = Math.max(screenMax, imgMax) / Math.min(screenMax, imgMax);
-            }
-            compressSelImages.add(FileSizeUtil.compressBitmap(mContext,
-                    file.getAbsolutePath(),
-                    Bitmap.CompressFormat.JPEG,
-                    options.outWidth / inSimpleSize,
-                    options.outHeight / inSimpleSize,
-                    false));
-        }
-        return compressSelImages;
     }
 
     public ArrayList<String> getSelectedImages() {

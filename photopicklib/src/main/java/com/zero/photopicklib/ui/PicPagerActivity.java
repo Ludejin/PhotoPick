@@ -2,7 +2,6 @@ package com.zero.photopicklib.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,6 @@ import android.view.View;
 
 import com.zero.photopicklib.R;
 import com.zero.photopicklib.adapter.PhotoPagerAdapter;
-import com.zero.photopicklib.util.StatusBarCompat;
 import com.zero.photopicklib.widget.PinchImageViewPager;
 
 import java.util.ArrayList;
@@ -55,9 +53,9 @@ public class PicPagerActivity extends AppCompatActivity {
 
     private void initToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setBackgroundColor(android.R.color.transparent);
         setSupportActionBar(mToolbar);
 
-        StatusBarCompat.compat(this, ActivityCompat.getColor(this, android.R.color.transparent));
         mToolbar.setNavigationIcon(R.drawable.ic_go_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
+<com.zero.photopicklib.widget.CompatToolbar
     android:id="@id/toolbar"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -14,4 +14,4 @@
         style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:layout_gravity="center" />
 
-</android.support.v7.widget.Toolbar>
+</com.zero.photopicklib.widget.CompatToolbar>

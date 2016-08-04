@@ -34,14 +34,12 @@ public class PickConfig {
     public final static String EXTRA_SEL_IMAGE      = "extra_sel_image";
     public final static String EXTRA_MAX_SIZE       = "extra_max_size";
     public final static String EXTRA_SHOW_GIF       = "extra_show_gif";
-    public final static String EXTRA_IS_COMPRESS    = "extra_is_compress";
 
     private final int spanCount;
     private final int maxPickSize;
     private final int toolbarColor;
     private final boolean showGif;
     private final boolean checkImage;
-    private final boolean isCompress;
     private final ArrayList<String> selImages = new ArrayList<>();
 
     public PickConfig(Activity context, Builder builder) {
@@ -51,7 +49,6 @@ public class PickConfig {
 
         this.showGif = builder.showGif;
         this.checkImage = builder.checkImage;
-        this.isCompress = builder.isCompress;
 
         this.selImages.clear();
         this.selImages.addAll(builder.selImages);
@@ -62,7 +59,6 @@ public class PickConfig {
         bundle.putInt(EXTRA_TOOLBAR_COLOR,this.toolbarColor);
         bundle.putBoolean(EXTRA_SHOW_GIF, this.showGif);
         bundle.putBoolean(EXTRA_CHECK_IMAGE, this.checkImage);
-        bundle.putBoolean(EXTRA_IS_COMPRESS, this.isCompress);
         bundle.putStringArrayList(EXTRA_SEL_IMAGE, selImages);
         startPick(context, bundle);
     }

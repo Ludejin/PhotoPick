@@ -24,7 +24,7 @@ task clean(type: Delete) {
 }
 
 def retrofitVersion = "2.1.0"
-def supportVersion = "24.0.0"
+def supportVersion = "24.1.1"
 def okHttpVersion = '3.3.1'
 def glideVersion = "3.7.0"
 

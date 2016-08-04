@@ -3,7 +3,6 @@ package com.zero.photopicklib.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -32,7 +31,6 @@ import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
 import com.zero.photopicklib.util.CaptureManager;
 import com.zero.photopicklib.util.PickConfig;
-import com.zero.photopicklib.util.StatusBarCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,16 +73,12 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private int toolbarColor;
     private boolean showCamera;
     private boolean showGif;
-    private boolean isCompress;
     private Bundle mBundle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_picker);
-
-
-        StatusBarCompat.compat(this, ActivityCompat.getColor(this, R.color.colorPrimary));
 
         mRcyPhoto = (RecyclerView) findViewById(R.id.rcy_picker);
         btnDir = (AppCompatButton) findViewById(R.id.btn_dir);
@@ -111,7 +105,6 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         spanCount = mBundle.getInt(PickConfig.EXTRA_SPAN_COUNT, PickConfig.DEFAULT_SPAN_COUNT);
         maxPickSize = mBundle.getInt(PickConfig.EXTRA_MAX_SIZE, PickConfig.DEFAULT_PICK_SIZE);
         toolbarColor = mBundle.getInt(PickConfig.EXTRA_TOOLBAR_COLOR, PickConfig.DEFAULT_TOOLBAR_COLOR);
-        isCompress = mBundle.getBoolean(PickConfig.EXTRA_IS_COMPRESS, PickConfig.DEFAULT_COMPRESS);
         selImages = mBundle.getStringArrayList(PickConfig.EXTRA_SEL_IMAGE);
     }
 
@@ -159,12 +152,12 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     private void initToolbar() {
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(getString(R.string.picker_title));
         setSupportActionBar(toolbar);
 
-        StatusBarCompat.compat(this, ActivityCompat.getColor(this, toolbarColor));
         toolbar.setBackgroundResource(toolbarColor);
         toolbar.setNavigationIcon(R.drawable.ic_go_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -245,11 +238,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         ArrayList<String> selectedImages;
-        if (isCompress) {
-            selectedImages = mPhotoAdapter.getCompressImages();
-        } else {
-            selectedImages = mPhotoAdapter.getSelectedImages();
-        }
+        selectedImages = mPhotoAdapter.getSelectedImages();
 
         if (selectedImages.size() == 0) {
             Toast.makeText(this, getString(R.string.picker_please_sel_photo),
@@ -278,6 +267,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             mPhotos.clear();
             mPhotos.addAll(directory.getPhotos());
             mPhotoAdapter.notifyDataSetChanged();
+            addPath = "";
         }
     }
 
