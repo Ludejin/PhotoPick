@@ -34,6 +34,7 @@ public class DirViewHolder {
                 .into(ivCover);
 
         ivSel.setVisibility(View.INVISIBLE);
+
         if (photoDir.isSel()) {
             ivSel.setVisibility(View.VISIBLE);
         }

@@ -32,7 +32,7 @@ public class PhotoUtil {
     private final static Uri IMAGE_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
 
-    public static List<PhotoDir> getPhotos(Context context, boolean checkImageStatus, boolean showGif) {
+    public static List<PhotoDir> getPhotos(Context context, boolean checkImageStatus, boolean showGif, boolean showAll) {
 
         ContentResolver resolver = context.getContentResolver();
 
@@ -50,7 +50,7 @@ public class PhotoUtil {
 
         if (data == null) return null;
 
-        List<PhotoDir> directories = Data.getDataFromCursor(context,data,checkImageStatus);
+        List<PhotoDir> directories = Data.getDataFromCursor(context,data,checkImageStatus, showAll);
         data.close();
 
         return directories;

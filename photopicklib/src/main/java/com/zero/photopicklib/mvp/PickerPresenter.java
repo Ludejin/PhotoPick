@@ -25,23 +25,25 @@ public class PickerPresenter implements PickerContract.Presenter {
     private Context mContext;
     private boolean checkImg;
     private boolean showGif;
+    private boolean showAll;
 
     public PickerPresenter(PhotoRepository photoRepository, PickerContract.View view,
-                           Context context, boolean checkImg, boolean showGif) {
+                           Context context, boolean checkImg, boolean showGif, boolean showAll) {
         mPhotoRepository = photoRepository;
         mView = view;
         mContext = context;
         this.checkImg = checkImg;
         this.showGif = showGif;
+        this.showAll = showAll;
 
         mSubscriptions = new CompositeSubscription();
         mView.setPresenter(this);
     }
 
     @Override
-    public void getPhotos(Context context, boolean checkImage, boolean showGif) {
+    public void getPhotos(Context context, boolean checkImage, boolean showGif, boolean showAll) {
         mSubscriptions.clear();
-        Subscription subscription = mPhotoRepository.getPhotos(context, checkImage, showGif)
+        Subscription subscription = mPhotoRepository.getPhotos(context, checkImage, showGif, showAll)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<PhotoDir>>() {
@@ -55,7 +57,7 @@ public class PickerPresenter implements PickerContract.Presenter {
 
     @Override
     public void subscribe() {
-        getPhotos(mContext, checkImg, showGif);
+        getPhotos(mContext, checkImg, showGif, showAll);
     }
 
     @Override

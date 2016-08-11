@@ -27,12 +27,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(path: ':photopicklib')
-
     compile rootProject.ext.libSupportAppcompat
-    compile rootProject.ext.libSupportDesign
-    compile rootProject.ext.libSupportV4
-    compile rootProject.ext.libRxAndroid
-    compile rootProject.ext.libRxJava
-    compile rootProject.ext.libGlide
+    compile 'com.zero:photopicklib:0.3.2'
 }

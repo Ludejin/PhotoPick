@@ -16,11 +16,12 @@ import rx.Subscriber;
  */
 public class PhotoRepository implements PhotoDataSource {
     @Override
-    public Observable<List<PhotoDir>> getPhotos(final Context context, final boolean checkImage, final boolean showGif) {
+    public Observable<List<PhotoDir>> getPhotos(final Context context, final boolean checkImage,
+                                                final boolean showGif, final boolean showAll) {
         return Observable.create(new Observable.OnSubscribe<List<PhotoDir>>() {
             @Override
             public void call(Subscriber<? super List<PhotoDir>> subscriber) {
-                List<PhotoDir> photos = PhotoUtil.getPhotos(context, checkImage, showGif);
+                List<PhotoDir> photos = PhotoUtil.getPhotos(context, checkImage, showGif, showAll);
                 subscriber.onNext(photos);
                 subscriber.onCompleted();
             }

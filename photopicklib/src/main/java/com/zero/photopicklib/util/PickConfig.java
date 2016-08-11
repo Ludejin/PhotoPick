@@ -20,8 +20,9 @@ public class PickConfig {
     public static int DEFAULT_PICK_SIZE     = 1;
     public static int DEFAULT_SPAN_COUNT    = 3;
     public static boolean DEFAULT_SHOW_GIF  = false;
-    public static boolean DEFAULT_COMPRESS  = false;
     public static boolean DEFAULT_CHECK_IMAGE = false;
+    public static boolean DEFAULT_SHOW_ALL  = true;
+    public static boolean DEFAULT_SHOW_CAMERA  = true;
 
     public final static int PICK_REQUEST_CODE = 10607;
 
@@ -33,12 +34,16 @@ public class PickConfig {
     public final static String EXTRA_SPAN_COUNT     = "extra_span_count";
     public final static String EXTRA_SEL_IMAGE      = "extra_sel_image";
     public final static String EXTRA_MAX_SIZE       = "extra_max_size";
+    public final static String EXTRA_SHOW_ALL       = "extra_show_all";
+    public final static String EXTRA_SHOW_CAMERA    = "extra_show_camera";
     public final static String EXTRA_SHOW_GIF       = "extra_show_gif";
 
     private final int spanCount;
     private final int maxPickSize;
     private final int toolbarColor;
     private final boolean showGif;
+    private final boolean showAll;
+    private final boolean showCamera;
     private final boolean checkImage;
     private final ArrayList<String> selImages = new ArrayList<>();
 
@@ -48,6 +53,8 @@ public class PickConfig {
         this.toolbarColor = builder.toolbarColor;
 
         this.showGif = builder.showGif;
+        this.showCamera = builder.showCamera;
+        this.showAll = builder.showAll;
         this.checkImage = builder.checkImage;
 
         this.selImages.clear();
@@ -58,6 +65,8 @@ public class PickConfig {
         bundle.putInt(EXTRA_MAX_SIZE, this.maxPickSize);
         bundle.putInt(EXTRA_TOOLBAR_COLOR,this.toolbarColor);
         bundle.putBoolean(EXTRA_SHOW_GIF, this.showGif);
+        bundle.putBoolean(EXTRA_SHOW_ALL, this.showAll);
+        bundle.putBoolean(EXTRA_SHOW_CAMERA, this.showCamera);
         bundle.putBoolean(EXTRA_CHECK_IMAGE, this.checkImage);
         bundle.putStringArrayList(EXTRA_SEL_IMAGE, selImages);
         startPick(context, bundle);
@@ -76,8 +85,9 @@ public class PickConfig {
         private int maxPickSize = DEFAULT_PICK_SIZE;
         private int toolbarColor = DEFAULT_TOOLBAR_COLOR;
         private boolean showGif = DEFAULT_SHOW_GIF;
+        private boolean showAll = DEFAULT_SHOW_ALL;
+        private boolean showCamera = DEFAULT_SHOW_CAMERA;
         private boolean checkImage = DEFAULT_CHECK_IMAGE;
-        private boolean isCompress = DEFAULT_COMPRESS;
         private ArrayList<String> selImages = new ArrayList<>();
 
         public Builder(Activity context) {
@@ -111,13 +121,18 @@ public class PickConfig {
             return this;
         }
 
-        public PickConfig.Builder compress(boolean isCompress) {
-            this.isCompress = isCompress;
+        public PickConfig.Builder showGif(boolean showGif) {
+            this.showGif = showGif;
             return this;
         }
 
-        public PickConfig.Builder showGif(boolean showGif) {
-            this.showGif = showGif;
+        public PickConfig.Builder showCamera(boolean showCamera) {
+            this.showCamera = showCamera;
+            return this;
+        }
+
+        public PickConfig.Builder showAll(boolean showAll) {
+            this.showAll = showAll;
             return this;
         }
 

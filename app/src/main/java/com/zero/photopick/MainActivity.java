@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 .maxPickSize(5)
                 .showGif(true)
                 .spanCount(3)
-                .compress(true)
+                .showAll(false)
                 .toolbarColor(R.color.toolbarColor)
                 .setSelImage(mSelImages)
                 .build();

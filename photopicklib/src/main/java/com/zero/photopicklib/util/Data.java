@@ -21,7 +21,8 @@ import static android.provider.MediaStore.MediaColumns.DATE_ADDED;
  */
 public class Data {
     public final static int INDEX_ALL_PHOTOS = 0;
-    public static List<PhotoDir> getDataFromCursor(Context context, Cursor data, boolean checkImageStatus){
+
+    public static List<PhotoDir> getDataFromCursor(Context context, Cursor data, boolean checkImageStatus, boolean showAll) {
         List<PhotoDir> directories = new ArrayList<>();
         PhotoDir photoDirectoryAll = new PhotoDir();
         photoDirectoryAll.setName(context.getString(R.string.picker_all_image));
@@ -49,8 +50,9 @@ public class Data {
                     } else {
                         directories.get(directories.indexOf(photoDirectory)).addPhoto(imageId, path);
                     }
-
-                    photoDirectoryAll.addPhoto(imageId, path);
+                    if (showAll) {
+                        photoDirectoryAll.addPhoto(imageId, path);
+                    }
                 }
             } else {
 
@@ -67,7 +69,9 @@ public class Data {
                     directories.get(directories.indexOf(photoDirectory)).addPhoto(imageId, path);
                 }
 
-                photoDirectoryAll.addPhoto(imageId, path);
+                if (showAll) {
+                    photoDirectoryAll.addPhoto(imageId, path);
+                }
             }
 
 
@@ -75,7 +79,9 @@ public class Data {
         if (photoDirectoryAll.getPhotoPaths().size() > 0) {
             photoDirectoryAll.setCoverPath(photoDirectoryAll.getPhotoPaths().get(0));
         }
-        directories.add(INDEX_ALL_PHOTOS, photoDirectoryAll);
+        if (showAll) {
+            directories.add(INDEX_ALL_PHOTOS, photoDirectoryAll);
+        }
 
         return directories;
     }

@@ -16,6 +16,6 @@ public interface PickerContract {
     }
 
     interface Presenter extends BasePresenter {
-        void getPhotos(Context context, boolean checkImage, boolean showGif);
+        void getPhotos(Context context, boolean checkImage, boolean showGif, boolean showAll);
     }
 }

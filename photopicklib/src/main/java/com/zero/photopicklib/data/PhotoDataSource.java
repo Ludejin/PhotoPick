@@ -13,5 +13,5 @@ import rx.Observable;
  * 邮箱：dejin_lu@creawor.com
  */
 public interface PhotoDataSource {
-    Observable<List<PhotoDir>> getPhotos(Context context, boolean checkImage, boolean showGif);
+    Observable<List<PhotoDir>> getPhotos(Context context, boolean checkImage, boolean showGif, boolean showAll);
 }

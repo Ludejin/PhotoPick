@@ -1,9 +1,11 @@
 package com.zero.photopicklib.ui;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -31,6 +33,7 @@ import com.zero.photopicklib.mvp.PickerContract;
 import com.zero.photopicklib.mvp.PickerPresenter;
 import com.zero.photopicklib.util.CaptureManager;
 import com.zero.photopicklib.util.PickConfig;
+import com.zero.photopicklib.util.StatusBarUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,7 +76,11 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     private int toolbarColor;
     private boolean showCamera;
     private boolean showGif;
+    private boolean showAll;
     private Bundle mBundle;
+
+    public PickerActivity() {
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,14 +90,14 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         mRcyPhoto = (RecyclerView) findViewById(R.id.rcy_picker);
         btnDir = (AppCompatButton) findViewById(R.id.btn_dir);
 
-        mPresenter = new PickerPresenter(new PhotoRepository(), this,
-                this, false, false);
-
-        mPresenter.subscribe();
-
         mCaptureManager = new CaptureManager(this);
 
         initData();
+
+        mPresenter = new PickerPresenter(new PhotoRepository(), this,
+                this, showCamera, showGif, showAll);
+
+        mPresenter.subscribe();
 
         initToolbar();
 
@@ -106,6 +113,9 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         maxPickSize = mBundle.getInt(PickConfig.EXTRA_MAX_SIZE, PickConfig.DEFAULT_PICK_SIZE);
         toolbarColor = mBundle.getInt(PickConfig.EXTRA_TOOLBAR_COLOR, PickConfig.DEFAULT_TOOLBAR_COLOR);
         selImages = mBundle.getStringArrayList(PickConfig.EXTRA_SEL_IMAGE);
+        showCamera = mBundle.getBoolean(PickConfig.EXTRA_SHOW_CAMERA, PickConfig.DEFAULT_SHOW_CAMERA);
+        showAll = mBundle.getBoolean(PickConfig.EXTRA_SHOW_ALL, PickConfig.DEFAULT_SHOW_ALL);
+        showGif = mBundle.getBoolean(PickConfig.EXTRA_SHOW_GIF, PickConfig.DEFAULT_SHOW_GIF);
     }
 
     private void initEvent() {
@@ -152,14 +162,21 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     private void initToolbar() {
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(getString(R.string.picker_title));
-        setSupportActionBar(toolbar);
 
+        StatusBarUtil.setColor(this, toolbarColor);
         toolbar.setBackgroundResource(toolbarColor);
-        toolbar.setNavigationIcon(R.drawable.ic_go_back);
+        toolbar.setTitle("");
+        toolbar.inflateMenu(R.menu.menu_picker);
+
+        final Drawable upArrow = ActivityCompat.getDrawable(this, R.drawable.ic_go_back);
+        assert upArrow != null;
+        upArrow.setColorFilter(ActivityCompat.getColor(this, android.R.color.white),
+                PorterDuff.Mode.SRC_ATOP);
+        toolbar.setNavigationIcon(upArrow);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,12 +184,24 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
             }
         });
 
-        ActionBar mActionBar = getSupportActionBar();
-        if (null != mActionBar) {
-            mActionBar.setElevation(0);
-            mActionBar.setDisplayShowTitleEnabled(false);
-            mActionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ArrayList<String> selectedImages;
+                selectedImages = mPhotoAdapter.getSelectedImages();
+
+                if (selectedImages.size() == 0) {
+                    Toast.makeText(PickerActivity.this, getString(R.string.picker_please_sel_photo),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent intent = new Intent();
+                    intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAY_LIST, selectedImages);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                return true;
+            }
+        });
     }
 
     private void initRecycleView() {
@@ -236,27 +265,6 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        ArrayList<String> selectedImages;
-        selectedImages = mPhotoAdapter.getSelectedImages();
-
-        if (selectedImages.size() == 0) {
-            Toast.makeText(this, getString(R.string.picker_please_sel_photo),
-                    Toast.LENGTH_SHORT).show();
-        } else {
-//            for (String path : selectedImages) {
-//                Log.i("路径", path);
-//                Log.i("大小", FileSizeUtil.getAutoFileOrFilesSize(path));
-//            }
-            Intent intent = new Intent();
-            intent.putStringArrayListExtra(PickConfig.EXTRA_STRING_ARRAY_LIST, selectedImages);
-            setResult(RESULT_OK, intent);
-            finish();
-        }
-        return true;
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (null != addPath && !TextUtils.isEmpty(addPath)) {
@@ -285,6 +293,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         mDirAdapter.notifyDataSetChanged();
 
         mPhotos.clear();
+        btnDir.setText(photoDirs.get(0).getName());
         mPhotos.addAll(photoDirs.get(0).getPhotos());
         mPhotoAdapter.notifyDataSetChanged();
     }
