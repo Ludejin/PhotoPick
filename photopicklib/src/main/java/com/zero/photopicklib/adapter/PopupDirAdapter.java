@@ -15,7 +15,6 @@ import java.util.List;
 
 /**
  * Created by Jin_ on 2016/6/22
- * 邮箱：dejin_lu@creawor.com
  */
 public class PopupDirAdapter extends BaseAdapter {
 

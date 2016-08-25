@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 /**
  * Created by Jin_ on 2016/6/21
- * 邮箱：dejin_lu@creawor.com
  */
 public class PhotoViewHolder extends RecyclerView.ViewHolder {
 

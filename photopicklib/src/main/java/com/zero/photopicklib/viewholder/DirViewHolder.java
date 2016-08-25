@@ -11,7 +11,6 @@ import com.zero.photopicklib.entity.PhotoDir;
 
 /**
  * Created by Jin_ on 2016/6/22
- * 邮箱：dejin_lu@creawor.com
  */
 public class DirViewHolder {
     private ImageView ivCover;

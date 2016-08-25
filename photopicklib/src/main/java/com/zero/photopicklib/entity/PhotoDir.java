@@ -5,7 +5,6 @@ import java.util.List;
 
 /**
  * Created by Jin_ on 2016/6/11
- * 邮箱：dejin_lu@creawor.com
  */
 public class PhotoDir {
 

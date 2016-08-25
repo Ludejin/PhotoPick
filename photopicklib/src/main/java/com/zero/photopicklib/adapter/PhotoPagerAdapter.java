@@ -18,7 +18,6 @@ import java.util.LinkedList;
 
 /**
  * Created by Jin_ on 2016/6/30
- * 邮箱：dejin_lu@creawor.com
  */
 public class PhotoPagerAdapter extends PagerAdapter {
 

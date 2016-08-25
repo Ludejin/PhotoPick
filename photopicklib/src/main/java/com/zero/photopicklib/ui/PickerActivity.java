@@ -44,7 +44,6 @@ import static com.zero.photopicklib.ui.PicPagerActivity.EXTRA_PATH;
 
 /**
  * Created by Jin_ on 2016/6/11
- * 邮箱：dejin_lu@creawor.com
  */
 public class PickerActivity extends AppCompatActivity implements PickerContract.View,
         OnPhotoClickListener {
@@ -166,7 +165,7 @@ public class PickerActivity extends AppCompatActivity implements PickerContract.
         toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(getString(R.string.picker_title));
 
-        StatusBarUtil.setColor(this, toolbarColor);
+        StatusBarUtil.setColor(this, ActivityCompat.getColor(this, toolbarColor));
         toolbar.setBackgroundResource(toolbarColor);
         toolbar.setTitle("");
         toolbar.inflateMenu(R.menu.menu_picker);

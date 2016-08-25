@@ -14,7 +14,6 @@ import static android.provider.MediaStore.MediaColumns.MIME_TYPE;
 
 /**
  * Created by Jin_ on 2016/6/21
- * 邮箱：dejin_lu@creawor.com
  */
 public class PhotoUtil {
     private static final String[] IMAGE_PROJECTION = {

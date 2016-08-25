@@ -14,8 +14,7 @@ import java.util.ArrayList;
 
 
 /**
- * Created by Jin_ on 2016/6/30
- * 邮箱：dejin_lu@creawor.com
+ * Created by Jin_ on 2016/6/3
  */
 public class PicPagerActivity extends AppCompatActivity {
 

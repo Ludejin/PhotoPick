@@ -2,7 +2,6 @@ package com.zero.photopicklib.entity;
 
 /**
  * Created by Jin_ on 2016/6/11
- * 邮箱：dejin_lu@creawor.com
  */
 public class Photo {
     private int id;
